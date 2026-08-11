@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="{{ current_lang }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ t('app_name') }} - {{ t('tagline') }}</title>
+
+    <!-- Google Fonts for English, Hindi (Devanagari), Telugu -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&family=Noto+Sans+Telugu:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('index') }}" class="nav-brand">
+                <span class="brand-icon">🌱</span>
+                <div class="brand-text">
+                    <span class="brand-title">{{ t('app_name') }}</span>
+                    <span class="brand-sub">{{ t('tagline') }}</span>
+                </div>
+            </a>
+
+            <!-- Language Switcher Selector -->
+            <div class="lang-selector-wrapper">
+                <label for="langSelect" class="sr-only">Language</label>
+                <select id="langSelect" class="lang-dropdown" onchange="changeLanguage(this.value)">
+                    <option value="en" {% if current_lang == 'en' %}selected{% endif %}>🇬🇧 English</option>
+                    <option value="hi" {% if current_lang == 'hi' %}selected{% endif %}>🇮🇳 हिंदी (Hindi)</option>
+                    <option value="te" {% if current_lang == 'te' %}selected{% endif %}>🇮🇳 తెలుగు (Telugu)</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Navigation Links -->
+        <nav class="nav-menu">
+            <a href="{{ url_for('index') }}" class="nav-item {% if request.path == '/' %}active{% endif %}">
+                <span class="nav-icon">🏠</span> {{ t('nav_home') }}
+            </a>
+            <a href="{{ url_for('weather') }}" class="nav-item {% if request.path == '/weather' %}active{% endif %}">
+                <span class="nav-icon">🌦️</span> {{ t('nav_weather') }}
+            </a>
+            <a href="{{ url_for('soil') }}" class="nav-item {% if request.path == '/soil' %}active{% endif %}">
+                <span class="nav-icon">🌱</span> {{ t('nav_soil') }}
+            </a>
+            <a href="{{ url_for('crop') }}" class="nav-item {% if request.path == '/crop' %}active{% endif %}">
+                <span class="nav-icon">🍂</span> {{ t('nav_crop') }}
+            </a>
+            <a href="{{ url_for('chat') }}" class="nav-item {% if request.path == '/chat' %}active{% endif %}">
+                <span class="nav-icon">🤖</span> {{ t('nav_chat') }}
+            </a>
+        </nav>
+    </header>
+
+    <!-- Flash Messages Container -->
+    <div class="container main-content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            <span>{{ message }}</span>
+                            <button type="button" class="alert-close" onclick="this.parentElement.remove();">&times;</button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Main Body Content -->
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+        <div class="container footer-content">
+            <p><strong>{{ t('app_name') }}</strong> &copy; 2026 - Simple & Mobile-First Farm Advisory</p>
+            <p class="footer-disclaimer">{{ t('general_disclaimer') }}</p>
+        </div>
+    </footer>
+
+    <!-- App JavaScript -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

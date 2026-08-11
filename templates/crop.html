@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">🍂 {{ t('crop_header') }}</h1>
+    <p class="page-subtitle">{{ t('crop_intro') }}</p>
+</div>
+
+<!-- Upload Form Card -->
+<div class="card form-card">
+    <form action="{{ url_for('crop') }}" method="POST" enctype="multipart/form-data" class="agri-form" onsubmit="submitFormWithLoading(this)">
+        <div class="form-group">
+            <label for="crop_image" class="form-label">{{ t('lbl_upload_image') }} *</label>
+            <div class="file-upload-wrapper">
+                <input type="file" id="crop_image" name="crop_image" accept=".jpg,.jpeg,.png" class="file-input" onchange="previewCropImage(this)" required>
+                <div class="file-upload-box" onclick="document.getElementById('crop_image').click()">
+                    <span class="upload-icon">📷</span>
+                    <span class="upload-text" id="uploadText">Tap to select or take leaf photo (JPG/PNG)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Image Preview Container -->
+        <div id="imagePreviewContainer" class="image-preview-container hidden mt-3">
+            <p class="preview-label">{{ t('lbl_preview') }}:</p>
+            <img id="imagePreview" src="" alt="Crop leaf preview" class="preview-image">
+        </div>
+
+        <div class="form-actions mt-3">
+            <button type="submit" class="btn btn-primary btn-block btn-submit">
+                <span class="btn-text">{{ t('btn_analyze_crop') }}</span>
+                <span class="btn-spinner hidden"></span>
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Simulated Disease Detection Result Card -->
+{% if result %}
+<div class="card result-card">
+    <div class="result-header">
+        <div class="city-title-wrap">
+            <h2 class="result-title">🔍 {{ t('res_condition') }}: {{ result.condition }}</h2>
+            <span class="badge badge-demo">{{ result.badge_text }}</span>
+        </div>
+    </div>
+
+    <!-- Uploaded Photo & Details Flex -->
+    <div class="crop-result-flex">
+        {% if result.file_url %}
+        <div class="result-image-box">
+            <img src="{{ result.file_url }}" alt="Uploaded leaf" class="result-image">
+        </div>
+        {% endif %}
+
+        <div class="result-details">
+            <div class="detail-item">
+                <strong>📊 {{ t('res_confidence') }}:</strong>
+                <span class="confidence-badge">{{ result.confidence }}</span>
+            </div>
+
+            <div class="detail-item mt-2">
+                <strong>🧬 {{ t('res_cause') }}:</strong>
+                <p>{{ result.cause }}</p>
+            </div>
+
+            <div class="detail-item mt-2">
+                <strong>💊 {{ t('res_treatment') }}:</strong>
+                <p>{{ result.treatment }}</p>
+            </div>
+
+            <div class="detail-item mt-2">
+                <strong>🛡️ {{ t('res_prevention') }}:</strong>
+                <p>{{ result.prevention }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="safety-disclaimer warning-disclaimer mt-3">
+        ⚠️ {{ result.disclaimer }}
+    </div>
+</div>
+{% endif %}
+{% endblock %}

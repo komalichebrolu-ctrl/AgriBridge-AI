@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">🤖 {{ t('chat_header') }}</h1>
+    <p class="page-subtitle">{{ t('chat_intro') }}</p>
+</div>
+
+<!-- Quick Prompts Chips -->
+<div class="card quick-prompts-card">
+    <span class="prompts-label">⚡ {{ t('chat_quick_prompts') }}</span>
+    <div class="chips-wrapper">
+        <button type="button" class="chip" data-prompt="{{ t('prompt_rain') }}" onclick="sendQuickPrompt(this.dataset.prompt)">
+            🌧️ {{ t('prompt_rain') }}
+        </button>
+        <button type="button" class="chip" data-prompt="{{ t('prompt_heat') }}" onclick="sendQuickPrompt(this.dataset.prompt)">
+            ☀️ {{ t('prompt_heat') }}
+        </button>
+        <button type="button" class="chip" data-prompt="{{ t('prompt_fertilizer') }}" onclick="sendQuickPrompt(this.dataset.prompt)">
+            🌱 {{ t('prompt_fertilizer') }}
+        </button>
+        <button type="button" class="chip" data-prompt="{{ t('prompt_disease') }}" onclick="sendQuickPrompt(this.dataset.prompt)">
+            🍂 {{ t('prompt_disease') }}
+        </button>
+    </div>
+</div>
+
+<!-- Chat Conversation Box -->
+<div class="card chat-container">
+    <div class="chat-messages" id="chatMessages">
+        <!-- Initial Bot Welcome Message -->
+        <div class="chat-bubble bot-bubble">
+            <div class="bubble-sender">🤖 {{ t('app_name') }} {{ t('lbl_assistant') }}</div>
+            <div class="bubble-text">{{ t('chat_welcome_msg') }}</div>
+        </div>
+
+        {% if last_message and last_reply %}
+        <div class="chat-bubble user-bubble">
+            <div class="bubble-sender">👨‍🌾 {{ t('lbl_you') }}</div>
+            <div class="bubble-text">{{ last_message }}</div>
+        </div>
+
+        <div class="chat-bubble bot-bubble">
+            <div class="bubble-sender">🤖 {{ t('app_name') }} {{ t('lbl_assistant') }}</div>
+            <div class="bubble-text">{{ last_reply }}</div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Chat Input Form -->
+    <form id="chatForm" action="{{ url_for('chat') }}" method="POST" class="chat-input-form" onsubmit="submitChatMessage(event)">
+        <div class="input-with-button">
+            <input type="text" id="chatInput" name="message" class="form-control" placeholder="{{ t('ph_chat') }}" required autocomplete="off">
+            <button type="submit" id="chatSubmitBtn" class="btn btn-primary">
+                <span>{{ t('btn_send') }} 🚀</span>
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

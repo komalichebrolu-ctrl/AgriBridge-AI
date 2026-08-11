@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">🌦️ {{ t('weather_header') }}</h1>
+    <p class="page-subtitle">{{ t('weather_intro') }}</p>
+</div>
+
+<!-- Weather Search Form Card -->
+<div class="card form-card">
+    <form action="{{ url_for('weather') }}" method="POST" class="agri-form" onsubmit="submitFormWithLoading(this)">
+        <div class="form-group">
+            <label for="city" class="form-label">{{ t('lbl_city') }} *</label>
+            <div class="input-with-button">
+                <input type="text" id="city" name="city" class="form-control" placeholder="{{ t('ph_city') }}" value="{{ city_input or '' }}" required autofocus>
+                <button type="submit" class="btn btn-primary btn-submit">
+                    <span class="btn-text">{{ t('btn_get_weather') }}</span>
+                    <span class="btn-spinner hidden"></span>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Weather Results Display Card -->
+{% if result %}
+<div class="card result-card">
+    <div class="result-header">
+        <div class="city-title-wrap">
+            <h2 class="result-city">📍 {{ result.city }}</h2>
+            <span class="badge {% if result.is_demo %}badge-demo{% else %}badge-live{% endif %}">
+                {{ result.badge_text }}
+            </span>
+        </div>
+        {% if result.demo_notice %}
+            <div class="demo-alert">
+                ⚠️ {{ result.demo_notice }}
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Weather Stats Grid -->
+    <div class="weather-grid">
+        <div class="stat-card">
+            <span class="stat-icon">🌡️</span>
+            <div class="stat-info">
+                <span class="stat-label">{{ t('res_temperature') }}</span>
+                <span class="stat-value">{{ result.temp_c }} °C</span>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <span class="stat-icon">💧</span>
+            <div class="stat-info">
+                <span class="stat-label">{{ t('res_humidity') }}</span>
+                <span class="stat-value">{{ result.humidity }} %</span>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <span class="stat-icon">💨</span>
+            <div class="stat-info">
+                <span class="stat-label">{{ t('res_wind_speed') }}</span>
+                <span class="stat-value">{{ result.wind_speed_kmh }} km/h</span>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <span class="stat-icon">🌧️</span>
+            <div class="stat-info">
+                <span class="stat-label">{{ t('res_rain_prob') }}</span>
+                <span class="stat-value">{{ result.rain_prob }} %</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="weather-condition">
+        <strong>{{ t('res_weather_desc') }}:</strong> {{ result.description }}
+    </div>
+
+    <!-- Field Action Advisories -->
+    <div class="advisory-box">
+        <h3 class="advisory-title">📢 {{ t('res_advisory') }}</h3>
+        <ul class="advisory-list">
+            {% for adv in result.advisories %}
+                <li>{{ adv }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="safety-disclaimer">
+        ℹ️ {{ result.disclaimer }}
+    </div>
+</div>
+{% endif %}
+{% endblock %}

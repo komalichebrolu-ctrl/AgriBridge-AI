@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">📊 {{ t('result_title') }}</h1>
+</div>
+
+<div class="card result-card">
+    <div class="result-header">
+        <div class="city-title-wrap">
+            <h2 class="result-title">📌 {{ feature }}</h2>
+            <span class="badge {% if is_demo %}badge-demo{% else %}badge-live{% endif %}">
+                {% if is_demo %}{{ t('demo_mode_badge') }}{% else %}{{ t('live_mode_badge') }}{% endif %}
+            </span>
+        </div>
+    </div>
+
+    <div class="structured-result-grid">
+        <div class="result-item">
+            <span class="item-label">⚠️ {{ t('res_problem') }}:</span>
+            <div class="item-value">{{ problem }}</div>
+        </div>
+
+        <div class="result-item mt-3">
+            <span class="item-label">🔍 {{ t('res_reason') }}:</span>
+            <div class="item-value">{{ reason }}</div>
+        </div>
+
+        <div class="result-item mt-3">
+            <span class="item-label">✅ {{ t('res_solution') }}:</span>
+            <div class="item-value">{{ solution }}</div>
+        </div>
+
+        <div class="result-item mt-3">
+            <span class="item-label">🛡️ {{ t('res_tip') }}:</span>
+            <div class="item-value">{{ tip }}</div>
+        </div>
+    </div>
+
+    <div class="safety-disclaimer mt-4">
+        ℹ️ {{ t('general_disclaimer') }}
+    </div>
+
+    <div class="result-actions mt-4">
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">
+            &larr; {{ t('btn_back_home') }}
+        </a>
+    </div>
+</div>
+{% endblock %}

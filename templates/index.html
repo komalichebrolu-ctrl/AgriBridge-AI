@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="hero-section card">
+    <div class="hero-content">
+        <h1 class="hero-title">{{ t('welcome_title') }}</h1>
+        <p class="hero-subtitle">{{ t('welcome_subtitle') }}</p>
+    </div>
+</section>
+
+<!-- 4 Core Feature Cards Grid -->
+<div class="features-grid">
+    <!-- Card 1: Weather Advice -->
+    <div class="feature-card card green-border">
+        <div class="card-icon-header">
+            <span class="card-icon">🌦️</span>
+            <span class="card-badge badge-info">Real-time</span>
+        </div>
+        <h2 class="card-title">{{ t('card_weather_title') }}</h2>
+        <p class="card-text">{{ t('card_weather_desc') }}</p>
+        <a href="{{ url_for('weather') }}" class="btn btn-primary btn-block">
+            {{ t('btn_open') }} &rarr;
+        </a>
+    </div>
+
+    <!-- Card 2: Soil Guidance -->
+    <div class="feature-card card earth-border">
+        <div class="card-icon-header">
+            <span class="card-icon">🌱</span>
+            <span class="card-badge badge-success">Smart Advisory</span>
+        </div>
+        <h2 class="card-title">{{ t('card_soil_title') }}</h2>
+        <p class="card-text">{{ t('card_soil_desc') }}</p>
+        <a href="{{ url_for('soil') }}" class="btn btn-primary btn-block">
+            {{ t('btn_open') }} &rarr;
+        </a>
+    </div>
+
+    <!-- Card 3: Crop Disease Detection -->
+    <div class="feature-card card leaf-border">
+        <div class="card-icon-header">
+            <span class="card-icon">🍂</span>
+            <span class="card-badge badge-warning">Simulated AI</span>
+        </div>
+        <h2 class="card-title">{{ t('card_crop_title') }}</h2>
+        <p class="card-text">{{ t('card_crop_desc') }}</p>
+        <a href="{{ url_for('crop') }}" class="btn btn-primary btn-block">
+            {{ t('btn_open') }} &rarr;
+        </a>
+    </div>
+
+    <!-- Card 4: AI Farming Chat -->
+    <div class="feature-card card chat-border">
+        <div class="card-icon-header">
+            <span class="card-icon">🤖</span>
+            <span class="card-badge badge-dark">100% Offline</span>
+        </div>
+        <h2 class="card-title">{{ t('card_chat_title') }}</h2>
+        <p class="card-text">{{ t('card_chat_desc') }}</p>
+        <a href="{{ url_for('chat') }}" class="btn btn-primary btn-block">
+            {{ t('btn_open') }} &rarr;
+        </a>
+    </div>
+</div>
+
+<!-- Info banner regarding prototype status -->
+<div class="prototype-banner card">
+    <div class="prototype-flex">
+        <span class="proto-icon">ℹ️</span>
+        <div>
+            <strong>AgriBridge AI Prototype Notice:</strong>
+            <p>{{ t('general_disclaimer') }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

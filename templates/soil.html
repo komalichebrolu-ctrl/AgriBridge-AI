@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">🌱 {{ t('soil_header') }}</h1>
+    <p class="page-subtitle">{{ t('soil_intro') }}</p>
+</div>
+
+<!-- Soil Form Card -->
+<div class="card form-card">
+    <form action="{{ url_for('soil') }}" method="POST" class="agri-form" onsubmit="submitFormWithLoading(this)">
+        <div class="form-grid">
+            <!-- Soil Moisture Level -->
+            <div class="form-group">
+                <label for="moisture" class="form-label">{{ t('lbl_moisture') }} *</label>
+                <select id="moisture" name="moisture" class="form-control" required>
+                    <option value="dry">{{ t('opt_dry') }}</option>
+                    <option value="moist" selected>{{ t('opt_moist') }}</option>
+                    <option value="wet">{{ t('opt_wet') }}</option>
+                </select>
+            </div>
+
+            <!-- Crop Name -->
+            <div class="form-group">
+                <label for="crop_name" class="form-label">{{ t('lbl_crop_name') }} *</label>
+                <input type="text" id="crop_name" name="crop_name" class="form-control" placeholder="{{ t('ph_crop_name') }}" required>
+            </div>
+
+            <!-- Growth Stage -->
+            <div class="form-group">
+                <label for="growth_stage" class="form-label">{{ t('lbl_growth_stage') }} *</label>
+                <select id="growth_stage" name="growth_stage" class="form-control" required>
+                    <option value="seedling">{{ t('opt_seedling') }}</option>
+                    <option value="vegetative" selected>{{ t('opt_vegetative') }}</option>
+                    <option value="flowering">{{ t('opt_flowering') }}</option>
+                    <option value="fruiting">{{ t('opt_fruiting') }}</option>
+                </select>
+            </div>
+
+            <!-- Soil Type (Optional) -->
+            <div class="form-group">
+                <label for="soil_type" class="form-label">{{ t('lbl_soil_type') }}</label>
+                <select id="soil_type" name="soil_type" class="form-control">
+                    <option value="any" selected>{{ t('opt_soil_any') }}</option>
+                    <option value="clay">{{ t('opt_clay') }}</option>
+                    <option value="loam">{{ t('opt_loam') }}</option>
+                    <option value="sandy">{{ t('opt_sandy') }}</option>
+                    <option value="black">{{ t('opt_black') }}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-actions mt-3">
+            <button type="submit" class="btn btn-primary btn-block btn-submit">
+                <span class="btn-text">{{ t('btn_get_soil') }}</span>
+                <span class="btn-spinner hidden"></span>
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Soil Results Card -->
+{% if result %}
+<div class="card result-card">
+    <h2 class="result-title">🌾 {{ result.crop_name }} - {{ t('soil_header') }}</h2>
+
+    <div class="guidance-block">
+        <div class="guidance-item">
+            <h3 class="guidance-label">💧 {{ t('res_irrigation') }}</h3>
+            <p class="guidance-text">{{ result.irrigation_advice }}</p>
+        </div>
+
+        <div class="guidance-item mt-3">
+            <h3 class="guidance-label">🧪 {{ t('res_fertilizer') }}</h3>
+            <p class="guidance-text">{{ result.fertilizer_advice }}</p>
+        </div>
+    </div>
+
+    <div class="safety-disclaimer warning-disclaimer mt-3">
+        ⚠️ {{ result.disclaimer }}
+    </div>
+</div>
+{% endif %}
+{% endblock %}
